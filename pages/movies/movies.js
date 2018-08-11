@@ -6,7 +6,9 @@ Page({
    * 页面的初始数据
    */
   data: {
-  
+    inTheaters: {},
+    comingSoon: {},
+    top250: {}
   },
 
   /**
@@ -19,15 +21,15 @@ Page({
       "/v2/movie/coming_soon" + "?start=0&count=3";
     var top250Url = app.globalData.doubanBase +
       "/v2/movie/top250" + "?start=0&count=3";
-    this.getMovieListData(inTheatersUrl);
-    // this.getMovieListData(comingSoonUrl);
-    // this.getMovieListData(top250Url);
+    this.getMovieListData(inTheatersUrl, "inTheaters");
+    this.getMovieListData(comingSoonUrl, "comingSoon");
+    this.getMovieListData(top250Url,"top250");
   },
 
 
  
 
-    getMovieListData: function (url) {
+  getMovieListData: function (url, subkey) {
      var that =this
       wx.request({
         url: url,
@@ -37,7 +39,7 @@ Page({
         },
         success: function (res) {
           //console.log(res)
-          that.processDoubanData(res.data)
+          that.processDoubanData(res.data, subkey)
         },
         fail: function (error) {
           // fail
@@ -46,7 +48,7 @@ Page({
       })
     },
 
-  processDoubanData: function (movieDouban){
+  processDoubanData: function (movieDouban,subkey){
     var movies =[];
     for(var idx in movieDouban.subjects){
       var subject = movieDouban.subjects[idx];
@@ -62,9 +64,11 @@ Page({
       }
       movies.push(temp);
     }
-    this.setData({
-      movies:movies
-    })
+
+    var radyData = {};
+    radyData[subkey] = {movies: movies};
+
+    this.setData(radyData)
   },
 
   /**
