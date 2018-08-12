@@ -3,7 +3,7 @@
   <view class='movie-container'>
     <image class='movie-img' src='{{coveragerUrl}}'></image>
     <text class='movie-title'>{{title}}</text>
-    <template is="starsTempalte" data='{{average}}'/>
+    <template is="starsTempalte" data='{{stars:stars, score: average}}'/>
   </view>
 
   </template>
